@@ -1,5 +1,5 @@
 import { products } from "../data/products.js";
-import { cart } from "../data/cart.js";
+import { cart, addToCart } from "../data/cart.js";
 
 let productsHTML = '';
 
@@ -61,55 +61,41 @@ innerHTML = productsHTML;
 
 const timeoutList = {};
 
+
+function updateCartQuantity(productId) {
+    let cartQuantity = 0;
+
+    // update icon cart quantity 
+    cart.forEach((cartItem) => {
+        cartQuantity += cartItem.quantity;
+    })
+    document.querySelector('.js-card-quantity').
+    innerHTML = cartQuantity;
+
+    // added to cart message
+    const addedMessage = document.
+    querySelector(`.js-added-to-cart-${productId}`);
+
+    if (timeoutList[productId]) {
+        clearTimeout(timeoutList[productId])
+    }
+
+    addedMessage.classList.add("added-to-cart-visible");
+
+    const timeout = setTimeout(() => {
+        addedMessage.classList.remove('added-to-cart-visible');
+      }, 2000);
+    timeoutList[productId] = timeout;
+}
+
+
 document.querySelectorAll('.js-add-to-cart-button').forEach (
     (button) => {
         button.addEventListener('click', () => {
             const {productId} = button.dataset;
-            let matchItem;
-            let cartQuantity = 0;
 
-            // check if item already added
-            cart.forEach((item) => {
-                if (item.productId === productId) {
-                    matchItem = item;    
-                }
-            })
-
-            // use selector
-            const selectorValue = Number(document.
-            querySelector(`.js-quantity-selector-${productId}`).value);
-            
-            // update quantity
-            if (matchItem) {
-                matchItem.quantity += selectorValue;
-            } else {
-                cart.push({
-                    productId,
-                    quantity: selectorValue
-                })
-            } 
-
-            // update icon cart quantity 
-            cart.forEach((item) => {
-                cartQuantity += item.quantity;
-            })
-            document.querySelector('.js-card-quantity').
-            innerHTML = cartQuantity;
-
-            // added to cart message
-            const addedMessage = document.
-            querySelector(`.js-added-to-cart-${productId}`);
-
-            if (timeoutList[productId]) {
-                clearTimeout(timeoutList[productId])
-            }
-
-            addedMessage.classList.add("added-to-cart-visible");
-
-            const timeout = setTimeout(() => {
-                addedMessage.classList.remove('added-to-cart-visible');
-              }, 2000);
-            timeoutList[productId] = timeout;
+            addToCart(productId);
+            updateCartQuantity(productId);
 
         })
     }
