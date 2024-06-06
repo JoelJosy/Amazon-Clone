@@ -4,6 +4,16 @@ import { formatCurrency } from "./utils/money.js";
 
 let productsHTML = '';
 
+function updateCardQuantity() {
+    let cartQuantity = 0;
+    cart.forEach((cartItem) => {
+        cartQuantity += cartItem.quantity;
+    })
+    document.querySelector('.js-card-quantity')
+    .innerHTML = cartQuantity;
+}
+
+
 products.forEach((product) => {
     productsHTML += `<div class="product-container">
     <div class="product-image-container">
@@ -62,16 +72,11 @@ innerHTML = productsHTML;
 
 const timeoutList = {};
 
+updateCardQuantity();
 
-function updateCartQuantity(productId) {
-    let cartQuantity = 0;
-
+function updateCardQuantityHome(productId) {
     // update icon cart quantity 
-    cart.forEach((cartItem) => {
-        cartQuantity += cartItem.quantity;
-    })
-    document.querySelector('.js-card-quantity').
-    innerHTML = cartQuantity;
+    updateCardQuantity();
 
     // added to cart message
     const addedMessage = document.
@@ -90,13 +95,14 @@ function updateCartQuantity(productId) {
 }
 
 
+
 document.querySelectorAll('.js-add-to-cart-button').forEach (
     (button) => {
         button.addEventListener('click', () => {
             const {productId} = button.dataset;
 
             addToCart(productId);
-            updateCartQuantity(productId);
+            updateCardQuantityHome(productId);
 
         })
     }
