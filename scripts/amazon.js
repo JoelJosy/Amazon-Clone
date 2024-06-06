@@ -1,17 +1,8 @@
 import { products } from "../data/products.js";
-import { cart, addToCart } from "../data/cart.js";
+import { cart, addToCart, calculateCartQuantity } from "../data/cart.js";
 import { formatCurrency } from "./utils/money.js";
 
 let productsHTML = '';
-
-function updateCardQuantity() {
-    let cartQuantity = 0;
-    cart.forEach((cartItem) => {
-        cartQuantity += cartItem.quantity;
-    })
-    document.querySelector('.js-card-quantity')
-    .innerHTML = cartQuantity;
-}
 
 
 products.forEach((product) => {
@@ -72,11 +63,13 @@ innerHTML = productsHTML;
 
 const timeoutList = {};
 
-updateCardQuantity();
+document.querySelector('.js-card-quantity')
+.innerHTML = calculateCartQuantity();
 
-function updateCardQuantityHome(productId) {
+function updateCardQuantity(productId) {
     // update icon cart quantity 
-    updateCardQuantity();
+    document.querySelector('.js-card-quantity')
+    .innerHTML = calculateCartQuantity();
 
     // added to cart message
     const addedMessage = document.
@@ -102,7 +95,7 @@ document.querySelectorAll('.js-add-to-cart-button').forEach (
             const {productId} = button.dataset;
 
             addToCart(productId);
-            updateCardQuantityHome(productId);
+            updateCardQuantity(productId);
 
         })
     }
