@@ -3,9 +3,11 @@ import { products } from "../data/products.js";
 import {formatCurrency} from "./utils/money.js"
 
 let cartSummaryHTML = '';
+let cartQuantity = 0;
 
 cart.forEach((cartItem) => {
     const productId = cartItem.productId;
+    cartQuantity += cartItem.quantity;
 
     let matchingProduct;
     products.forEach((product) => {
@@ -13,7 +15,6 @@ cart.forEach((cartItem) => {
             matchingProduct = product ;  
         } 
     })
-
 
     cartSummaryHTML += `<div class="cart-item-container
     js-cart-item-container-${matchingProduct.id}">
@@ -105,6 +106,10 @@ cart.forEach((cartItem) => {
     </div>
 </div>`
 })
+
+document.querySelector('.js-checkout-items')
+.innerHTML = cartQuantity;
+
 
 document.querySelector('.js-order-summary').innerHTML = cartSummaryHTML;
 
