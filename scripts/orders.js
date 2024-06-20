@@ -112,10 +112,3 @@ async function loadPage() {
 }
 
 loadPage();
-
-
-
-
-/* 
-
-*/
