@@ -34,19 +34,34 @@ export function addToCart(productId) {
     })
 
     // use selector
-    const selectorValue = Number(document.
-        querySelector(`.js-quantity-selector-${productId}`).value);
-        
-    // update quantity
-    if (matchingItem) {
-        matchingItem.quantity += selectorValue;
-    } else {
-        cart.push({
-            productId,
-            quantity: selectorValue,
-            deliveryOptionId: '1'
-        })
-    } 
+    try {
+
+        const selectorValue = Number(document.
+            querySelector(`.js-quantity-selector-${productId}`).value);
+            
+        // update quantity
+        if (matchingItem) {
+            matchingItem.quantity += selectorValue;
+        } else {
+            cart.push({
+                productId,
+                quantity: selectorValue,
+                deliveryOptionId: '1'
+            })
+        } 
+    } catch {
+        // update quantity
+        if (matchingItem) {
+            matchingItem.quantity ++;
+        } else {
+            cart.push({
+                productId,
+                quantity: 1,
+                deliveryOptionId: '1'
+            })
+        } 
+
+    }
 
     saveToStorage();
 
