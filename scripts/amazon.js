@@ -15,7 +15,7 @@ function renderProductsGrid() {
 
     if (search) {
         filteredProducts = products.filter((product) => {
-          return product.name.includes(search);
+          return product.name.toLowerCase().includes(search.toLowerCase());
         });
     }
 
